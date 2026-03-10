@@ -10,6 +10,6 @@ class Disciplina extends Model
 
     protected $primaryKey = "id";
 
-    public $timeStamp = false;
+    public $timeStamp = true;
 
 }

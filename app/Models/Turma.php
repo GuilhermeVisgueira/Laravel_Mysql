@@ -10,7 +10,15 @@ class Turma extends Model
 
     protected $primaryKey = "id";
 
-    public $timeStamp = false;
+    public $timeStamp = true;
 
-    
+    public function Escola()
+    {
+        return $this->belongsTo(Escola::class, "escola_id");
+    }
+
+    public function Aluno()
+    {
+        return $this->hasMany(Aluno::class,"turma_aluno");
+    }
 }

@@ -10,5 +10,10 @@ class Nota extends Model
 
     protected $primaryKey = "id";
 
-    public $timeStamp = false;
+    public $timeStamp = true;
+
+    public function Aluno()
+    {
+        return $this->belongsTo(Aluno::class, "nota_aluno");
+    }
 }

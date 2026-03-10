@@ -10,10 +10,15 @@ class Aluno extends Model
 
     protected $primaryKey = "id";
 
-    public $timestamp = false;
+    public $timestamp = true;
 
-    public function AlunosToEscola ()
+    public function Escola ()
     {
         return $this->belongsTo(Escola::class, "aluno_escola");
+    }
+
+    public function Nota()
+    {
+        return $this-> hasMany(Nota::class, "nota_aluno");
     }
 }

@@ -10,6 +10,6 @@ class Aula extends Model
 
     protected $primaryKey = "id";
 
-    public $timestamp = false;
+    public $timestamp = true;
 
 }

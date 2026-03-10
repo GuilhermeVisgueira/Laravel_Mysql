@@ -10,10 +10,21 @@ class Escola extends Model
 
     protected $primaryKey = "id";
 
-    public $timeStamp = false;
+    public $timeStamp = true;
 
-    public function EscolaToAluno()
+    
+    public function Aluno()
     {
         return $this->hasMany (Aluno:: class, "aluno_escola");
+    }
+
+    public function EscolaFuncionario (): HasMany
+    {
+        return $this-> hasMany (Funcionario:: class, "escola_id");
+    }
+
+    public function Turma()
+    {
+        return $this->hasMany(Turma::class, "turma_escola");
     }
 }

@@ -10,6 +10,18 @@ class Funcionario extends Model
 
     protected $primaryKey = "id";
 
-    public $timeStamp = false;
+    public $timeStamp = true;  
 
+    
+
+    public function EscolaFuncionario ()
+    {
+        return $this-> hasMany(Professor::class, "professor_id");
+    }
+
+    public function Funcao()
+    {
+        return $this-> belongsTo(Funcao:: class, "funcao_id");
+    }
 }
+
