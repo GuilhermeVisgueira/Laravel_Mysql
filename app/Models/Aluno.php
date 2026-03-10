@@ -21,4 +21,10 @@ class Aluno extends Model
     {
         return $this-> hasMany(Nota::class, "nota_aluno");
     }
+
+    public function Turma()
+    {
+        return $this->belongsTo(Turma::class, "aluno_turma");
+    }
+    
 }

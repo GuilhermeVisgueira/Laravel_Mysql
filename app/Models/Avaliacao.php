@@ -12,4 +12,15 @@ class Avaliacao extends Model
 
     public $timestamp = true;
 
+    public function Nota()
+    {
+        return $this-> hasMany(Nota::class,"nota_avaliacao");
+
+    }
+
+    public function Aula()
+    {
+        return $this-> belongsTo(Aula::class, "avaliacao_aula");
+    }
+
 }

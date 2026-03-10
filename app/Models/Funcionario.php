@@ -23,5 +23,11 @@ class Funcionario extends Model
     {
         return $this-> belongsTo(Funcao:: class, "funcao_id");
     }
+
+    public function Aula()
+    {
+        return $this->hasMany(Aula::class,"funcionario_aula");
+    }
+
 }
 

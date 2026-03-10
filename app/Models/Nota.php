@@ -16,4 +16,9 @@ class Nota extends Model
     {
         return $this->belongsTo(Aluno::class, "nota_aluno");
     }
+
+    public function Avaliacao()
+    {
+        return $this->belongsTo(Avaliacao::class, "nota_avaliacao");
+    }
 }

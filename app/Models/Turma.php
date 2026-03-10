@@ -21,4 +21,9 @@ class Turma extends Model
     {
         return $this->hasMany(Aluno::class,"turma_aluno");
     }
+
+    public function Aula()
+    {
+        return $this-> belongsTo(Aula::class,"turma_aula");
+    }
 }

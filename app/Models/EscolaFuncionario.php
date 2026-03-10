@@ -19,7 +19,7 @@ class EscolaFuncionario extends Model
 
     public function Funcionario()
     {
-        return $this-> hasMany(Funcionario::class,"funcionario_id");
+        return $this-> belongsTo(Funcionario::class,"funcionario_id");
     }
 }
  
