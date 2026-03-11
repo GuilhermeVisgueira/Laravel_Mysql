@@ -14,7 +14,7 @@ class Funcao extends Model
     
     public function Funcionario ()
     {
-        return $this->hasMany(Funcionario::class, "funcao_id");
+        return $this->hasMany(Funcionario::class, "funcao_id"); 
     }
 
 }
