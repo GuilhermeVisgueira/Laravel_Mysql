@@ -14,17 +14,17 @@ class Funcionario extends Model
 
     
 
-    public function EscolaFuncionario ()
+    public function escolaFuncionario ()
     {
         return $this-> hasMany(Professor::class, "professor_id");
     }
 
-    public function Funcao()
+    public function funcao()
     {
         return $this-> belongsTo(Funcao:: class, "funcao_id");
     }
 
-    public function Aula()
+    public function aula()
     {
         return $this->hasMany(Aula::class,"funcionario_aula");
     }

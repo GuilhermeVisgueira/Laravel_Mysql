@@ -12,17 +12,17 @@ class Aluno extends Model
 
     public $timestamp = true;
 
-    public function Escola ()
+    public function escola ()
     {
         return $this->belongsTo(Escola::class, "aluno_escola");
     }
 
-    public function Nota()
+    public function nota()
     {
-        return $this-> hasMany(Nota::class, "nota_aluno");
+        return $this->hasMany(Nota::class, "nota_aluno");
     }
 
-    public function Turma()
+    public function turma()
     {
         return $this->belongsTo(Turma::class, "aluno_turma");
     }

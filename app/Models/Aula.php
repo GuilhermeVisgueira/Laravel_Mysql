@@ -12,20 +12,20 @@ class Aula extends Model
 
     public $timestamp = true;
 
-    public function Turma()
+    public function turma()
     {
         return $this->hasMany(Turma::class, "turma_aula");
     }
-    public function Avaliacao()
+    public function avaliacao()
     {
         return $this->hasMany(Avaliacao::class, "avaliacao_aula");
     }
-    public function Disciplina()
+    public function disciplina()
     {
         return $this->belongsTo(Disciplina::class,"aula_disciplina");
     
     }
-    public function Funcionario()
+    public function funcionario()
     {
         return $this->belongsTo(Funcionario::class,"funcionario_aula");
     }

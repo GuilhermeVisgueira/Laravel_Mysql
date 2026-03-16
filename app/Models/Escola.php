@@ -13,17 +13,17 @@ class Escola extends Model
     public $timeStamp = true;
 
     
-    public function Aluno()
+    public function aluno()
     {
         return $this->hasMany (Aluno:: class, "aluno_escola");
     }
 
-    public function EscolaFuncionario (): HasMany
+    public function escolaFuncionario (): HasMany
     {
         return $this-> hasMany (Funcionario:: class, "escola_id");
     }
 
-    public function Turma()
+    public function turma()
     {
         return $this->hasMany(Turma::class, "turma_escola");
     }

@@ -12,7 +12,7 @@ class Funcao extends Model
 
     public $timeStamp = true;
     
-    public function Funcionario ()
+    public function funcionario ()
     {
         return $this->hasMany(Funcionario::class, "funcao_id"); 
     }

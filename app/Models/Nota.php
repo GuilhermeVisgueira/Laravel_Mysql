@@ -12,12 +12,12 @@ class Nota extends Model
 
     public $timeStamp = true;
 
-    public function Aluno()
+    public function aluno()
     {
         return $this->belongsTo(Aluno::class, "nota_aluno");
     }
 
-    public function Avaliacao()
+    public function avaliacao()
     {
         return $this->belongsTo(Avaliacao::class, "nota_avaliacao");
     }

@@ -12,7 +12,7 @@ class Disciplina extends Model
 
     public $timeStamp = true;
 
-    public function Aula()
+    public function aula()
     {
         return $this->hasMany(Aula::class, "aula_disciplina");
     }

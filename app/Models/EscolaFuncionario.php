@@ -12,12 +12,12 @@ class EscolaFuncionario extends Model
 
     public $timeStamp = true;
 
-    public function Escola()
+    public function escola()
     {
         return $this-> belongsTo(Escola:: class, "escola_id");
     }
 
-    public function Funcionario()
+    public function funcionario()
     {
         return $this-> belongsTo(Funcionario::class,"funcionario_id");
     }
