@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Nota extends Model
 {
@@ -11,6 +12,8 @@ class Nota extends Model
     protected $primaryKey = "id";
 
     public $timeStamp = true;
+
+    use SoftDeletes;
 
     public function aluno()
     {

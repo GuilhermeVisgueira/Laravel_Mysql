@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Funcao extends Model
 {
@@ -11,6 +12,8 @@ class Funcao extends Model
     protected $primaryKey ="id";
 
     public $timeStamp = true;
+
+    use SoftDeletes;
     
     public function funcionario ()
     {
