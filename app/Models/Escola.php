@@ -16,6 +16,12 @@ class Escola extends Model
 
     use SoftDeletes;
 
+    // fillable serve para 
+    protected $fillable =
+        [
+            "nome_escola",
+        ];
+
     
     public function aluno()
     {
