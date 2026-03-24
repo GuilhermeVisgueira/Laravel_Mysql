@@ -9,13 +9,15 @@ class EscolaController extends Controller
 {
    // fazer o crud que tem as funções que seram usadas no api.php
 
-
+  // get request, take all the datas
    public function seeAll()
    {
       $seeAll = Escola::all();
       return response()->json($seeAll, 200);
    }
 
+
+  // get request, using id to search
   public function searchForId($id)
   {
     $lookId = Escola::find($id);
@@ -29,9 +31,42 @@ class EscolaController extends Controller
     return response()->json($lookId,200);
   }
 
-  public function store(Request $request)
+  //post request nas escolas. sugestoes de rota /api/escola/create
+  public function safe(Request $request)
   {
-      
+    $createSchool = Escola::create($request->all());
+    // retorna uma resposta de confirmação da criação do banco
+    return response()-> json($createSchool,201);
+
   }
+
+  // update data 
+
+  public function update (Request $request, $id)
+  {
+    $escola = Escola::find($id);
+
+    if(!$escola)
+      {
+        return response()->json(["Erro"=> "Escola não encontrada"],404);
+      }
+    $escola->update($request->all());
+
+    return response()->json($escola,200);
+  }
+
+  public function delete($id)
+  {
+    $escola = Escola::find($id);
+    if(!$escola)
+      {
+        return response()->json(["Erro" =>"Escola não encontrada"],404);
+      }
+
+    $escola->delete();
+    return response()->json(["mensagem" => "deletado com sucesso", 200]);
+  }
+
+//pesquisar do request, objeto no php
 
 }
