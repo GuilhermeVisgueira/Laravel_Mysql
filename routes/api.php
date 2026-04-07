@@ -10,5 +10,5 @@ use App\Http\Controllers\EscolaController;
 //Rotas Escola:
 //Get
 //saber oq faz esse name
-Route::get('/escolas', 'seeAll')->name('orders.index');
+Route::get('/escolas', 'showAll')->name('orders.index');
 

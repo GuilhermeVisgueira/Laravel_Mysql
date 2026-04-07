@@ -10,10 +10,10 @@ class EscolaController extends Controller
    // fazer o crud que tem as funções que seram usadas no api.php
 
   // get request, take all the datas
-   public function seeAll()
+   public function showAll()
    {
-      $seeAll = Escola::all();
-      return response()->json($seeAll, 200);
+      $listAll = Escola::all();
+      return response()->json($listAll, 200);
    }
 
 
@@ -32,7 +32,7 @@ class EscolaController extends Controller
   }
 
   //post request nas escolas. sugestoes de rota /api/escola/create
-  public function safe(Request $request)
+  public function save(Request $request)
   {
     $createSchool = Escola::create($request->all());
     // retorna uma resposta de confirmação da criação do banco
