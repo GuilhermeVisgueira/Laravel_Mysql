@@ -31,7 +31,7 @@ class EscolaController extends Controller
     return response()->json($lookId,200);
   }
 
-  //post request nas escolas. sugestoes de rota /api/escola/create
+  
   public function save(Request $request)
   {
     $createSchool = Escola::create($request->all());
@@ -66,7 +66,5 @@ class EscolaController extends Controller
     $escola->delete();
     return response()->json(["mensagem" => "deletado com sucesso", 200]);
   }
-
-//pesquisar do request, objeto no php
 
 }
