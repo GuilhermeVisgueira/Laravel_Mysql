@@ -33,12 +33,14 @@ class TurmaController extends Controller
     public function update(Request $request, $id)
     {
         $turma = Turma::find($id);
-        if (!$turma) {
+        if (!$turma) 
+        {
             return response()->json(["Error" => "Turma não encontrada"], 404);
         }
         $turma->update($request->all());
         return response()->json($turma, 200);
     }
+
     public function delete($id)
     {
         $turma = Turma::find($id);
