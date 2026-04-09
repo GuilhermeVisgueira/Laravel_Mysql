@@ -22,7 +22,8 @@ class AlunoController extends Controller
 
         if(!$alunoId)
             {
-                return response(())->json(["error" => "Id de aluno não encontrado"]);
+
+                return response()->json(["error" => "Id de aluno não encontrado"]);
 
             }
         return response()->json($alunoId,200);
@@ -50,7 +51,7 @@ class AlunoController extends Controller
         $aluno = Aluno::find($id);
         if(!$aluno)
             {
-                return response()->json((["Erro"=>"Aluno não encontrado"],404));
+                return response()->json((["Erro"=>"Aluno não encontrado",404]));
 
             }
     }   $aluno->delete();
