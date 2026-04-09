@@ -36,7 +36,9 @@ class EscolaController extends Controller
   {
     $createSchool = Escola::create($request->all());
     // retorna uma resposta de confirmação da criação do banco
+    
     return response()-> json($createSchool,201);
+    
 
   }
 

@@ -17,9 +17,9 @@ class TurmaController extends Controller
     {
         $turmaId = Turma::find($id);
         //validação do id com o if, se nao tiver o id ele entra no if e retorna id nao encontrado
-        //se true entra se false nao entra no if
+        //se true entra, se false nao entra no if
         if (!$turmaId) {
-            return response()->jsonp(["Erro" => "Id da turma não encontrado"], 404);
+            return response()->json(["Erro" => "Id da turma não encontrado"], 404);
         }
         return response()->json($turmaId, 200);
     }
