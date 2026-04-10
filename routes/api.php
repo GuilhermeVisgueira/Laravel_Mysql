@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\EscolaController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\TurmaController;
@@ -29,3 +30,8 @@ Route::delete("/turma", [TurmaController::class, "delete"]);
 
 //Rotas Aluno:
 
+Route::get("/alunos", [AlunoController::class, "showAll"]);
+Route::get("/aluno/{id}", [AlunoController::class, "searchForId"]);
+Route::post("/aluno", [AlunoController::class, "save"]);
+Route::put("/aluno", [AlunoController::class, "update"]);
+Route::delete("/aluno", [AlunoController::class, "delete"]);
