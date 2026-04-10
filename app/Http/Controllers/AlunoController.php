@@ -40,7 +40,7 @@ class AlunoController extends Controller
         if (!$aluno) {
             return response()->json(["Error" => "Aluno não encontrado"], 404);
         }
-        $aluno->update()->json($aluno, 200);
+        $aluno->update($request->all());
         return response()->json($aluno, 200);
     }
 
