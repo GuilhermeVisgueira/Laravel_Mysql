@@ -16,6 +16,11 @@ class Nota extends Model
     public $timeStamp = true;
 
     use SoftDeletes;
+    protected $fillable =
+        [
+            "nota_aluno",
+            "nota_avaliacao"
+        ];
 
     public function aluno()
     {

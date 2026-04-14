@@ -16,6 +16,11 @@ class Disciplina extends Model
 
     use SoftDeletes;
 
+    protected $fillable =
+        [
+            "nome",
+        ];
+
     public function aula()
     {
         return $this->hasMany(Aula::class, "aula_disciplina");

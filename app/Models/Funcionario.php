@@ -17,9 +17,16 @@ class Funcionario extends Model
 
     use SoftDeletes;
 
+    protected $fillable =
+        [
+            "nome",
+            "pessoal",
+            "funcao_id"
+        ];
+
     public function escolaFuncionario ()
     {
-        return $this-> hasMany(Professor::class, "professor_id");
+        return $this-> hasMany(EscolaFuncionario::class, "funcionario_id");
     }
 
     public function funcao()

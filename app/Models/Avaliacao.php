@@ -16,6 +16,11 @@ class Avaliacao extends Model
 
     use SoftDeletes;
 
+    protected $fillable =
+        [
+            "avaliacao_aula",
+        ];
+
     public function nota()
     {
         return $this-> hasMany(Nota::class,"nota_avaliacao");

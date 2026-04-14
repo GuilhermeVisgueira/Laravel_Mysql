@@ -15,6 +15,12 @@ class Funcao extends Model
     public $timeStamp = true;
 
     use SoftDeletes;
+
+    protected $fillable =
+        [
+            "descricao",
+            "descricao"
+        ];
     
     public function funcionario ()
     {

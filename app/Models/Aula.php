@@ -16,6 +16,12 @@ class Aula extends Model
 
     use SoftDeletes;
 
+    protected $fillable =
+        [
+            "aula_disciplina",
+            "funcionario_aula"
+        ];
+
     public function turma()
     {
         return $this->hasMany(Turma::class, "turma_aula");
