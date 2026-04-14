@@ -18,8 +18,9 @@ Route::post('/escolas', [EscolaController::class, 'save']);
 Route::put('/escolas/{id}', [EscolaController::class, 'update']);
 Route::delete('/escolas/{id}', [EscolaController::class, 'delete']);
 
-//Rotas Escola_funcionario
-Route::get('/escola_funcionario', [FuncionarioController::class, '']);
+//Rotas 
+Route::get('/', [FuncionarioController::class, 'showAll']);
+Route::get("/");
 
 //Rotas Turma:
 

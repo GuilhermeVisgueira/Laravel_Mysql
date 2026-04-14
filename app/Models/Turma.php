@@ -17,6 +17,13 @@ class Turma extends Model
 
     use SoftDeletes;
 
+    protected $fillable =
+        [
+            "descricao",
+            "turma_escola",
+            "turma_aula"
+        ];
+
     public function escola()
     {
         return $this->belongsTo(Escola::class, "escola_id");

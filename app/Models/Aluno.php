@@ -16,6 +16,13 @@ class Aluno extends Model
 
     use SoftDeletes;
 
+    protected $fillable =
+        [
+            "nome",
+            "matricula",
+            "aluno_escola"
+        ];
+
     public function escola ()
     {
         return $this->belongsTo(Escola::class, "aluno_escola");

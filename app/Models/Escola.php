@@ -16,7 +16,7 @@ class Escola extends Model
 
     use SoftDeletes;
 
-    // fillable serve para 
+    // fillable serve para: mostra que campos eu posso ou nao alterar na requisição
     protected $fillable =
         [
             "nome_escola",
@@ -28,7 +28,7 @@ class Escola extends Model
         return $this->hasMany (Aluno:: class, "aluno_escola");
     }
 
-    public function escolaFuncionario (): HasMany
+    public function escolaFuncionario ()
     {
         return $this-> hasMany (Funcionario:: class, "escola_id");
     }
