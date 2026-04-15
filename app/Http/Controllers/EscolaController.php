@@ -53,6 +53,7 @@ class EscolaController extends Controller
         return response()->json(["Erro"=> "Escola não encontrada"],404);
       }
     $escola->update($request->all());
+    // update pega os parametros da funcao e coloca tudo na variavel
 
     return response()->json($escola,200);
   }

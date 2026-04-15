@@ -18,10 +18,6 @@ Route::post('/escolas', [EscolaController::class, 'save']);
 Route::put('/escolas/{id}', [EscolaController::class, 'update']);
 Route::delete('/escolas/{id}', [EscolaController::class, 'delete']);
 
-//Rotas 
-Route::get('/', [FuncionarioController::class, 'showAll']);
-Route::get("/");
-
 //Rotas Turma:
 
 Route::get("/turma", [TurmaController::class, "showAll"]);
@@ -45,3 +41,12 @@ Route::get("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "sea
 Route::post("/Escola_Funcionario", [EscolaFuncionarioController::class, "save"]);
 Route::put("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "save"]);
 Route::delete("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "delete"]);
+
+//Rotas funcionario
+Route::get('/funcionario', [FuncionarioController::class, 'showAll']);
+Route::get("/funcionario/{id}", [FuncionarioController::class, "searchForId"]);
+Route::post("/funcionario", [FuncionarioController::class, "save"]);
+Route::put("/funcionario/{id}", [FuncionarioController::class, "update"]);
+Route::delete("/funcionario/{id}", [FuncionarioController::class, "delete"]);
+
+//
