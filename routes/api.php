@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\EscolaController;
 use App\Http\Controllers\EscolaFuncionarioController;
+use App\Http\Controllers\FuncaoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\TurmaController;
 use Illuminate\Support\Facades\Route;
@@ -49,4 +50,11 @@ Route::post("/funcionario", [FuncionarioController::class, "save"]);
 Route::put("/funcionario/{id}", [FuncionarioController::class, "update"]);
 Route::delete("/funcionario/{id}", [FuncionarioController::class, "delete"]);
 
-//
+//Rotas Funcao
+Route::get("/funcao", [FuncaoController::class, "showAll"]);
+Route::get("/funcao/{id}", [FuncaoController::class, "searchForId"]);
+Route::post("/funcao", [FuncaoController::class, "save"]);
+Route::put("/funcao/{id}", [FuncaoController::class, "update"]);
+Route::delete("/funcao/{id}", [FuncaoController::class, "delete"]);
+
+//Rotas 
