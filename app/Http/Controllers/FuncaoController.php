@@ -27,7 +27,7 @@ class FuncaoController extends Controller
 
     public function save(Request $request)
     {
-        $createFuncao = Funcao::create(all());
+        $createFuncao = Funcao::create($request->all());
 
         return response()->json($createFuncao, 201);
     }
@@ -38,7 +38,7 @@ class FuncaoController extends Controller
 
         if(!$funcao)
             {
-            return response()->json(["Erro" => "Funcao nao encontrada"]);
+            return response()->json(["Erro" => "Funcao nao encontrada"],404);
             
             }
 
@@ -51,10 +51,10 @@ class FuncaoController extends Controller
         $funcao = Funcao::find($id);
         if(!$funcao)
             {
-            return response()->json(["Erro" => "Funcao nao encontrada"]);
+            return response()->json(["Erro" => "Funcao nao encontrada"],404);
             }
         $funcao->delete();
-        return response()->jsonp(["Mensagem" => "Funcao deletada com sucesso"]);
+        return response()->json(["Mensagem" => "Funcao deletada com sucesso"],200);
     }
 
 }
