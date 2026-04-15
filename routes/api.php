@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\AulaController;
 use App\Http\Controllers\EscolaController;
 use App\Http\Controllers\EscolaFuncionarioController;
 use App\Http\Controllers\FuncaoController;
@@ -43,18 +44,23 @@ Route::post("/Escola_Funcionario", [EscolaFuncionarioController::class, "save"])
 Route::put("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "save"]);
 Route::delete("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "delete"]);
 
-//Rotas funcionario
+//Rotas funcionario:
 Route::get('/funcionario', [FuncionarioController::class, 'showAll']);
 Route::get("/funcionario/{id}", [FuncionarioController::class, "searchForId"]);
 Route::post("/funcionario", [FuncionarioController::class, "save"]);
 Route::put("/funcionario/{id}", [FuncionarioController::class, "update"]);
 Route::delete("/funcionario/{id}", [FuncionarioController::class, "delete"]);
 
-//Rotas Funcao
+//Rotas Funcao:
 Route::get("/funcao", [FuncaoController::class, "showAll"]);
 Route::get("/funcao/{id}", [FuncaoController::class, "searchForId"]);
 Route::post("/funcao", [FuncaoController::class, "save"]);
 Route::put("/funcao/{id}", [FuncaoController::class, "update"]);
 Route::delete("/funcao/{id}", [FuncaoController::class, "delete"]);
 
-//Rotas 
+//Rotas Aula:
+Route::get("/aula", [AulaController::class, "showAll"]);
+Route::get("/aula/{id}", [AulaController::class, "searchForId"]);
+Route::post("/aula", [AulaController::class, "save"]);
+Route::put("/aula/{id}", [AulaController::class, "update"]);
+Route::delete("/aula/{id}", [AulaController::class, "delete"]);
