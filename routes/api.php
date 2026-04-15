@@ -7,6 +7,7 @@ use App\Http\Controllers\EscolaFuncionarioController;
 use App\Http\Controllers\FuncaoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\TurmaController;
+use App\Models\Disciplina;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -64,3 +65,11 @@ Route::get("/aula/{id}", [AulaController::class, "searchForId"]);
 Route::post("/aula", [AulaController::class, "save"]);
 Route::put("/aula/{id}", [AulaController::class, "update"]);
 Route::delete("/aula/{id}", [AulaController::class, "delete"]);
+
+//Rotas Disciplinas:
+
+Route::get("/disciplina", [Disciplina::class, "showAll"]);
+Route::get("/disciplina/{id}", [Disciplina::class, "searchForId"]);
+Route::post("/disciplina", [Disciplina::class, "save"]);
+Route::put("/disciplina/{id}", [Disciplina::class, "update"]);
+Route::delete("/disciplina/{id}", [Disciplina::class, "delete"]);
