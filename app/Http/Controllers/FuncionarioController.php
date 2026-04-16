@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\Funcionario;
+use App\Models\Funcionario;
 
 class FuncionarioController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $list = Funcionario::all();
         return response()->json($list, 200);

@@ -8,7 +8,7 @@ use App\Models\Funcao;
 class FuncaoController extends Controller
 {
 
-    public function showAll()
+    public function list()
     {
         $list = Funcao::all();
         return response()->json($list, 200);

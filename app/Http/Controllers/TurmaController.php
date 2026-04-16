@@ -7,7 +7,7 @@ use App\Models\Turma;
 
 class TurmaController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $listTurma = Turma::all();
         return response()->json($listTurma, 200);

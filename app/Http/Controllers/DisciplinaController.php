@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class DisciplinaController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $list = Disciplina::all();
         return response()->json($list, 200);

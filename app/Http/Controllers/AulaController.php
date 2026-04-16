@@ -9,7 +9,7 @@ class AulaController extends Controller
 {
     
 
-    public function showAll()
+    public function list()
     {
         $list = Aula::all();
 

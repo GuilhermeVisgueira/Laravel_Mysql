@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class AvaliacaoController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $av = Avaliacao::all();
         return response()->json($av, 200);

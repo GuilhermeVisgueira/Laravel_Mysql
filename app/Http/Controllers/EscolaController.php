@@ -10,7 +10,7 @@ class EscolaController extends Controller
    // fazer o crud que tem as funções que seram usadas no api.php
 
   // get request, take all the datas
-   public function showAll()
+   public function list()
    {
       $listAll = Escola::all();
       return response()->json($listAll, 200);

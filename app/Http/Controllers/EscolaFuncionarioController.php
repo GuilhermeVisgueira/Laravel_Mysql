@@ -7,7 +7,7 @@ use App\Models\EscolaFuncionario;
 
 class EscolaFuncionarioController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $listAll = EscolaFuncionario::all();
         return response()->json($listAll, 200);

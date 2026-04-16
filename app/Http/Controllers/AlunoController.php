@@ -10,7 +10,7 @@ use App\Models\Aluno;
 
 class AlunoController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $listAll = Aluno::all();
         return response()->json($listAll, 200);

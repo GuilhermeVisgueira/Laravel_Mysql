@@ -7,7 +7,7 @@ use App\Models\Nota;
 
 class NotaController extends Controller
 {
-    public function showAll()
+    public function list()
     {
         $nota = Nota::all();
         return response()->json($nota, 200);
