@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\AlunoController;
 use App\Http\Controllers\AulaController;
+use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\DisciplinaController;
 use App\Http\Controllers\EscolaController;
 use App\Http\Controllers\EscolaFuncionarioController;
 use App\Http\Controllers\FuncaoController;
 use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\NotaController;
 use App\Http\Controllers\TurmaController;
 use App\Models\Disciplina;
+use App\Models\Nota;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -67,9 +71,22 @@ Route::put("/aula/{id}", [AulaController::class, "update"]);
 Route::delete("/aula/{id}", [AulaController::class, "delete"]);
 
 //Rotas Disciplinas:
+Route::get("/disciplina", [DisciplinaController::class, "showAll"]);
+Route::get("/disciplina/{id}", [DisciplinaController::class, "searchForId"]);
+Route::post("/disciplina", [DisciplinaController::class, "save"]);
+Route::put("/disciplina/{id}", [DisciplinaController::class, "update"]);
+Route::delete("/disciplina/{id}", [DisciplinaController::class, "delete"]);
 
-Route::get("/disciplina", [Disciplina::class, "showAll"]);
-Route::get("/disciplina/{id}", [Disciplina::class, "searchForId"]);
-Route::post("/disciplina", [Disciplina::class, "save"]);
-Route::put("/disciplina/{id}", [Disciplina::class, "update"]);
-Route::delete("/disciplina/{id}", [Disciplina::class, "delete"]);
+//Rotas Nota:
+Route::get("/nota", [NotaController::class, "showAll"]);
+Route::get("/nota/{id}", [NotaController::class, "searchForId"]);
+Route::post("/nota", [NotaController::class, "save"]);
+Route::put("/nota/{id}", [NotaController::class, "update"]);
+Route::delete("/nota/{id}", [NotaController::class, "delete"]);
+
+//Rotas Avaliação:
+Route::get("/av", [AvaliacaoController::class, "showAll"]);
+Route::get("/av/{id}", [AvaliacaoController::class, "searchForId"]);
+Route::post("/av", [AvaliacaoController::class, "save"]);
+Route::put("/av/{id}", [AvaliacaoController::class, "update"]);
+Route::delete("/av/{id}", [AvaliacaoController::class, "delete"]);
