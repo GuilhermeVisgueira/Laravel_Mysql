@@ -49,7 +49,7 @@ class EscolaFuncionarioController extends Controller
                 return response()->json(["Erro" => "Escola_funcionario nao encontrado", 404]);
             }
         $EFuncionario->delete();
-        return response()->json(["Mensagem" => "Escola_funcionario deletado", 200]);
+        return response()->json(["Mensagem" => "Escola_funcionario deletado"],200);
     }
 
 }

@@ -11,7 +11,7 @@ class Funcionario extends Model
 {
     protected $table = "funcionario";
 
-    protected $primaryKey = "id";
+    protected $primaryKey  = "id";
 
     public $timeStamp = true;  
 

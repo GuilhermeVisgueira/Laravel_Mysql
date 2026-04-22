@@ -18,7 +18,6 @@ class Funcao extends Model
 
     protected $fillable =
         [
-            "descricao",
             "descricao"
         ];
     

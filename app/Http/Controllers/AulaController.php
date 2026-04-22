@@ -27,7 +27,7 @@ class AulaController extends Controller
         return response()->json($aula, 200);
     }
     
-    public function save(Request $request, $id)
+    public function save(Request $request)
     {
         $createAula = Aula::create($request->all());
 
