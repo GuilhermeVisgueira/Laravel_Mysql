@@ -45,7 +45,7 @@ Route::delete("/aluno/{id}", [AlunoController::class, "delete"]);
 Route::get("/Escola_Funcionario", [EscolaFuncionarioController::class, "list"]);
 Route::get("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "searchForId"]);
 Route::post("/Escola_Funcionario", [EscolaFuncionarioController::class, "save"]);
-Route::put("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "save"]);
+Route::put("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "update"]);
 Route::delete("/Escola_Funcionario/{id}", [EscolaFuncionarioController::class, "delete"]);
 
 //Rotas funcionario:

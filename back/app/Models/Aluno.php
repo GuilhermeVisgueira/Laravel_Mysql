@@ -20,7 +20,8 @@ class Aluno extends Model
         [
             "nome",
             "matricula",
-            "aluno_escola"
+            "aluno_escola",
+            "aluno_turma"
         ];
 
     public function escola ()
