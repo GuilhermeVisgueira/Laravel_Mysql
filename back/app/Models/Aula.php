@@ -18,8 +18,9 @@ class Aula extends Model
 
     protected $fillable =
         [
-            "aula_disciplina",
-            "funcionario_aula"
+            "disciplina_id",
+            "funcionario_id",
+            "turma_id"
         ];
 
     public function turma()

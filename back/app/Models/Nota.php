@@ -18,8 +18,8 @@ class Nota extends Model
     use SoftDeletes;
     protected $fillable =
         [
-            "nota_aluno",
-            "nota_avaliacao"
+            "aluno_id",
+            "avaliacao_id"
         ];
 
     public function aluno()

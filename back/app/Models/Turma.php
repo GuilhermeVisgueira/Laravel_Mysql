@@ -20,8 +20,8 @@ class Turma extends Model
     protected $fillable =
         [
             "descricao",
-            "turma_escola",
-            "turma_aula"
+            "escola_id",
+            
         ];
 
     public function escola()
