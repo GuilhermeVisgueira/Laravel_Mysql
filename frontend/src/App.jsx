@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
-const BASE_URL = "http://localhost:8000/api";
+const BASE_URL = "http://192.168.0.193:8000/api";
 
 const API = {
   escola:       { list: "/escolas",           id: (i) => `/escolas/${i}` },
@@ -15,11 +15,18 @@ const API = {
   escola_func:  { list: "/Escola_Funcionario", id: (i) => `/Escola_Funcionario/${i}` },
 };
 
-async function req(method, path, body) {
+async function req(method, path, body, signal) {
+  // Laravel sometimes drops PUT body when sent as JSON.
+  // Use POST + _method spoofing so the controller always receives the payload.
+  const isUpdate = method === "PUT" || method === "PATCH";
+  const fetchMethod = isUpdate ? "POST" : method;
+  const payload = isUpdate && body ? { ...body, _method: method } : body;
+
   const res = await fetch(BASE_URL + path, {
-    method,
+    method: fetchMethod,
     headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: body ? JSON.stringify(body) : undefined,
+    body: payload ? JSON.stringify(payload) : undefined,
+    signal,
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   if (method === "DELETE") return null;
@@ -42,10 +49,14 @@ const MODULES = [
     icon: "📚",
     color: "#0ea5e9",
     fields: [
-      { name: "descricao", label: "Descrição", type: "text", required: true },
-      { name: "turma_escola", label: "ID Escola", type: "number" },
-      { name: "turma_aula", label: "ID Aula", type: "number" },
+      { name: "descricao",    label: "Descrição", type: "text", required: true },
+      { name: "turma_escola", label: "Escola",    type: "select", optionsApi: API.escola.list, optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
+      { name: "turma_aula",   label: "Aula",      type: "select", optionsApi: API.aula.list,   optionLabel: (r) => `Aula #${r.id}` },
     ],
+    resolveColumns: {
+      turma_escola: { api: API.escola.list, label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
+      turma_aula:   { api: API.aula.list,   label: (r) => `Aula #${r.id}`,               colHeader: "Aula"   },
+    },
     api: API.turma,
     display: (r) => r.descricao,
   },
@@ -55,11 +66,15 @@ const MODULES = [
     icon: "🎓",
     color: "#10b981",
     fields: [
-      { name: "nome", label: "Nome", type: "text", required: true },
-      { name: "matricula", label: "Matrícula", type: "number", required: true },
-      { name: "aluno_escola", label: "ID Escola", type: "number" },
-      { name: "aluno_turma", label: "ID Turma", type: "number" },
+      { name: "nome",         label: "Nome",      type: "text",   required: true },
+      { name: "matricula",    label: "Matrícula", type: "number", required: true },
+      { name: "aluno_escola", label: "Escola",    type: "select", optionsApi: API.escola.list, optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
+      { name: "aluno_turma",  label: "Turma",     type: "select", optionsApi: API.turma.list,  optionLabel: (r) => r.descricao   || `ID ${r.id}` },
     ],
+    resolveColumns: {
+      aluno_escola: { api: API.escola.list, label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
+      aluno_turma:  { api: API.turma.list,  label: (r) => r.descricao   || `ID ${r.id}`, colHeader: "Turma"  },
+    },
     api: API.aluno,
     display: (r) => r.nome,
   },
@@ -69,10 +84,13 @@ const MODULES = [
     icon: "👤",
     color: "#f59e0b",
     fields: [
-      { name: "nome", label: "Nome", type: "text" },
-      { name: "pessoal", label: "Info Pessoal", type: "text" },
-      { name: "funcao_id", label: "ID Função", type: "number" },
+      { name: "nome",      label: "Nome",         type: "text" },
+      { name: "pessoal",   label: "Info Pessoal", type: "text" },
+      { name: "funcao_id", label: "Função",        type: "select", optionsApi: API.funcao.list, optionLabel: (r) => r.descricao || `ID ${r.id}` },
     ],
+    resolveColumns: {
+      funcao_id: { api: API.funcao.list, label: (r) => r.descricao || `ID ${r.id}`, colHeader: "Função" },
+    },
     api: API.funcionario,
     display: (r) => r.nome || `ID ${r.id}`,
   },
@@ -100,9 +118,14 @@ const MODULES = [
     icon: "🗒️",
     color: "#14b8a6",
     fields: [
-      { name: "aula_disciplina", label: "ID Disciplina", type: "number" },
-      { name: "funcionario_aula", label: "ID Funcionário (Prof.)", type: "number" },
+      { name: "aula_disciplina",  label: "Disciplina",           type: "select", optionsApi: API.disciplina.list,  optionLabel: (r) => r.nome || `ID ${r.id}` },
+      { name: "funcionario_aula", label: "Funcionário (Prof.)",  type: "select", optionsApi: API.funcionario.list, optionLabel: (r) => r.nome || `ID ${r.id}` },
     ],
+    // used to resolve FK ids → names in the list table
+    resolveColumns: {
+      aula_disciplina:  { api: API.disciplina.list,  label: (r) => r.nome       || `ID ${r.id}`, colHeader: "Disciplina" },
+      funcionario_aula: { api: API.funcionario.list, label: (r) => r.nome       || `ID ${r.id}`, colHeader: "Professor" },
+    },
     api: API.aula,
     display: (r) => `Aula #${r.id}`,
   },
@@ -111,7 +134,12 @@ const MODULES = [
     label: "Avaliações",
     icon: "📝",
     color: "#f97316",
-    fields: [{ name: "avaliacao_aula", label: "ID Aula", type: "number" }],
+    fields: [
+      { name: "avaliacao_aula", label: "Aula", type: "select", optionsApi: API.aula.list, optionLabel: (r) => `Aula #${r.id}` },
+    ],
+    resolveColumns: {
+      avaliacao_aula: { api: API.aula.list, label: (r) => `Aula #${r.id}`, colHeader: "Aula" },
+    },
     api: API.avaliacao,
     display: (r) => `Avaliação #${r.id}`,
   },
@@ -121,9 +149,13 @@ const MODULES = [
     icon: "⭐",
     color: "#eab308",
     fields: [
-      { name: "nota_aluno", label: "ID Aluno", type: "number" },
-      { name: "nota_avaliacao", label: "ID Avaliação", type: "number" },
+      { name: "nota_aluno",     label: "Aluno",     type: "select", optionsApi: API.aluno.list,     optionLabel: (r) => r.nome || `ID ${r.id}` },
+      { name: "nota_avaliacao", label: "Avaliação", type: "select", optionsApi: API.avaliacao.list, optionLabel: (r) => `Avaliação #${r.id}` },
     ],
+    resolveColumns: {
+      nota_aluno:     { api: API.aluno.list,     label: (r) => r.nome || `ID ${r.id}`, colHeader: "Aluno" },
+      nota_avaliacao: { api: API.avaliacao.list, label: (r) => `Avaliação #${r.id}`,   colHeader: "Avaliação" },
+    },
     api: API.nota,
     display: (r) => `Nota #${r.id}`,
   },
@@ -133,9 +165,13 @@ const MODULES = [
     icon: "🔗",
     color: "#06b6d4",
     fields: [
-      { name: "funcionario_id", label: "ID Funcionário", type: "number" },
-      { name: "escola_id", label: "ID Escola", type: "number" },
+      { name: "funcionario_id", label: "Funcionário", type: "select", optionsApi: API.funcionario.list, optionLabel: (r) => r.nome        || `ID ${r.id}` },
+      { name: "escola_id",      label: "Escola",      type: "select", optionsApi: API.escola.list,      optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
     ],
+    resolveColumns: {
+      funcionario_id: { api: API.funcionario.list, label: (r) => r.nome        || `ID ${r.id}`, colHeader: "Funcionário" },
+      escola_id:      { api: API.escola.list,      label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
+    },
     api: API.escola_func,
     display: (r) => `Vínculo #${r.id}`,
   },
@@ -180,6 +216,36 @@ function Modal({ title, onClose, children }) {
   );
 }
 
+function SelectField({ field, value, onChange, options, loadingOptions }) {
+  const selectStyle = {
+    width: "100%", boxSizing: "border-box",
+    background: "#0f0f1a", border: "1px solid rgba(255,255,255,.12)",
+    borderRadius: 8, padding: "9px 12px", color: "#e2e8f0",
+    fontSize: 14, outline: "none", appearance: "none",
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+    backgroundRepeat: "no-repeat", backgroundPosition: "right 12px center",
+    cursor: "pointer",
+  };
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <label style={{ display: "block", fontSize: 12, color: "#94a3b8", marginBottom: 6, fontWeight: 500, letterSpacing: ".04em", textTransform: "uppercase" }}>
+        {field.label}{field.required && <span style={{ color: "#f87171" }}> *</span>}
+      </label>
+      <select
+        value={value ?? ""}
+        onChange={(e) => onChange(field.name, e.target.value === "" ? "" : Number(e.target.value))}
+        disabled={loadingOptions}
+        style={selectStyle}
+      >
+        <option value="">{loadingOptions ? "Carregando…" : "— Nenhum —"}</option>
+        {options.map((opt) => (
+          <option key={opt.id} value={opt.id}>{opt._label}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 function FormField({ field, value, onChange }) {
   return (
     <div style={{ marginBottom: 14 }}>
@@ -204,14 +270,46 @@ function FormField({ field, value, onChange }) {
 function RecordForm({ module, initial, onSubmit, onCancel, loading }) {
   const [form, setForm] = useState(() => {
     const base = {};
-    module.fields.forEach((f) => { base[f.name] = initial?.[f.name] ?? ""; });
+    module.fields.forEach((f) => {
+      const raw = initial?.[f.name];
+      // Coerce FK select values to Number so <select> finds the right option
+      if (f.type === "select") {
+        base[f.name] = (raw != null && raw !== "") ? Number(raw) : "";
+      } else {
+        base[f.name] = raw ?? "";
+      }
+    });
     return base;
   });
+  const [selectOptions,  setSelectOptions]  = useState({});
+  const [loadingOptions, setLoadingOptions] = useState({});
+
+  useEffect(() => {
+    module.fields.forEach(async (f) => {
+      if (f.type !== "select") return;
+      setLoadingOptions((p) => ({ ...p, [f.name]: true }));
+      try {
+        const data = await req("GET", f.optionsApi);
+        const list = Array.isArray(data) ? data : data?.data ?? [];
+        setSelectOptions((p) => ({
+          ...p,
+          [f.name]: list.map((r) => ({ id: r.id, _label: f.optionLabel(r) })),
+        }));
+      } catch {
+        setSelectOptions((p) => ({ ...p, [f.name]: [] }));
+      } finally {
+        setLoadingOptions((p) => ({ ...p, [f.name]: false }));
+      }
+    });
+  }, [module]);
 
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }));
+
   const handleSubmit = () => {
     const payload = {};
     module.fields.forEach((f) => {
+      // Only skip truly unset fields (empty string = "not chosen")
+      // Include 0, false, and any other value the user selected
       if (form[f.name] !== "") payload[f.name] = form[f.name];
     });
     onSubmit(payload);
@@ -219,9 +317,20 @@ function RecordForm({ module, initial, onSubmit, onCancel, loading }) {
 
   return (
     <div>
-      {module.fields.map((f) => (
-        <FormField key={f.name} field={f} value={form[f.name]} onChange={set} />
-      ))}
+      {module.fields.map((f) =>
+        f.type === "select" ? (
+          <SelectField
+            key={f.name}
+            field={f}
+            value={form[f.name]}
+            onChange={set}
+            options={selectOptions[f.name] ?? []}
+            loadingOptions={!!loadingOptions[f.name]}
+          />
+        ) : (
+          <FormField key={f.name} field={f} value={form[f.name]} onChange={set} />
+        )
+      )}
       <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
         <button onClick={handleSubmit} disabled={loading} style={{
           flex: 1, background: module.color, color: "#fff", border: "none",
@@ -240,15 +349,26 @@ function RecordForm({ module, initial, onSubmit, onCancel, loading }) {
   );
 }
 
-function RecordRow({ record, module, onEdit, onDelete }) {
+function RecordRow({ record, module, lookups, onEdit, onDelete }) {
   const [confirm, setConfirm] = useState(false);
+  const rc   = module.resolveColumns ?? {};
   const cols = Object.entries(record).filter(([k]) => !["created_at","updated_at","deleted_at"].includes(k));
+
+  const displayVal = (k, v) => {
+    if (v == null) return <span style={{ fontStyle: "italic", color: "#4b5563" }}>null</span>;
+    // If this column has a lookup map, show the resolved name
+    if (rc[k] && lookups[k]) {
+      const resolved = lookups[k][v];
+      return resolved ?? String(v);
+    }
+    return String(v);
+  };
 
   return (
     <tr style={{ borderBottom: "1px solid rgba(255,255,255,.05)" }}>
       {cols.map(([k, v]) => (
-        <td key={k} style={{ padding: "10px 14px", fontSize: 13, color: v == null ? "#4b5563" : "#cbd5e1", maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-          {v == null ? <span style={{ fontStyle: "italic" }}>null</span> : String(v)}
+        <td key={k} style={{ padding: "10px 14px", fontSize: 13, color: "#cbd5e1", maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {displayVal(k, v)}
         </td>
       ))}
       <td style={{ padding: "10px 14px", whiteSpace: "nowrap" }}>
@@ -266,13 +386,19 @@ function RecordRow({ record, module, onEdit, onDelete }) {
 }
 
 function ModuleView({ module, toast }) {
-  const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [modal, setModal] = useState(null); // null | { mode: 'create'|'edit', record? }
-  const [search, setSearch] = useState("");
+  const [records, setRecords]   = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [saving,  setSaving]    = useState(false);
+  const [modal,   setModal]     = useState(null);
+  const [search,  setSearch]    = useState("");
+  // lookup maps: { columnKey: { id: label } }
+  const [lookups, setLookups]   = useState({});
+  // guard against React 18 StrictMode double-invoke
+  const loadingRef = useRef(false);
 
   const load = useCallback(async () => {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
     try {
       const data = await req("GET", module.api.list);
@@ -281,10 +407,33 @@ function ModuleView({ module, toast }) {
       toast("Erro ao carregar dados: " + e.message, "error");
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
+  }, [module]);  // eslint-disable-line
+
+  // Load lookup maps for columns that need name resolution
+  useEffect(() => {
+    const rc = module.resolveColumns;
+    if (!rc) return;
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        Object.entries(rc).map(async ([col, cfg]) => {
+          try {
+            const data = await req("GET", cfg.api);
+            const list = Array.isArray(data) ? data : data?.data ?? [];
+            const map  = {};
+            list.forEach((r) => { map[r.id] = cfg.label(r); });
+            return [col, map];
+          } catch { return [col, {}]; }
+        })
+      );
+      if (!cancelled) setLookups(Object.fromEntries(entries));
+    })();
+    return () => { cancelled = true; };
   }, [module]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { loadingRef.current = false; load(); }, [load]);
 
   const handleCreate = async (payload) => {
     setSaving(true);
@@ -293,18 +442,21 @@ function ModuleView({ module, toast }) {
       toast("Criado com sucesso!", "success");
       setModal(null);
       load();
-    } catch (e) { toast("Erro: " + e.message, "error"); }
+    } catch (e) { toast("Erro ao criar: " + e.message, "error"); }
     finally { setSaving(false); }
   };
 
   const handleUpdate = async (payload) => {
+    // Capture the id immediately — avoids stale closure if modal closes before async finishes
+    const recordId = modal?.record?.id;
+    if (!recordId) { toast("ID do registro não encontrado.", "error"); return; }
     setSaving(true);
     try {
-      await req("PUT", module.api.id(modal.record.id), payload);
+      await req("PUT", module.api.id(recordId), payload);
       toast("Atualizado com sucesso!", "success");
       setModal(null);
       load();
-    } catch (e) { toast("Erro: " + e.message, "error"); }
+    } catch (e) { toast("Erro ao atualizar: " + e.message, "error"); }
     finally { setSaving(false); }
   };
 
@@ -320,9 +472,13 @@ function ModuleView({ module, toast }) {
     search === "" || JSON.stringify(r).toLowerCase().includes(search.toLowerCase())
   );
 
+  const rc   = module.resolveColumns ?? {};
   const cols = records[0]
     ? Object.keys(records[0]).filter((k) => !["created_at","updated_at","deleted_at"].includes(k))
     : [];
+
+  // Header label: use resolveColumns colHeader if defined, else raw key
+  const colHeader = (k) => rc[k]?.colHeader ?? k;
 
   return (
     <div style={{ padding: "28px 32px" }}>
@@ -362,14 +518,16 @@ function ModuleView({ module, toast }) {
             <thead>
               <tr style={{ background: "rgba(255,255,255,.04)" }}>
                 {cols.map((c) => (
-                  <th key={c} style={{ padding: "10px 14px", textAlign: "left", fontSize: 11, color: "#64748b", fontWeight: 600, letterSpacing: ".06em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{c}</th>
+                  <th key={c} style={{ padding: "10px 14px", textAlign: "left", fontSize: 11, color: "#64748b", fontWeight: 600, letterSpacing: ".06em", textTransform: "uppercase", whiteSpace: "nowrap" }}>
+                    {colHeader(c)}
+                  </th>
                 ))}
                 <th style={{ padding: "10px 14px", fontSize: 11, color: "#64748b", fontWeight: 600, letterSpacing: ".06em", textTransform: "uppercase" }}>Ações</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <RecordRow key={r.id} record={r} module={module}
+                <RecordRow key={r.id} record={r} module={module} lookups={lookups}
                   onEdit={(rec) => setModal({ mode: "edit", record: rec })}
                   onDelete={handleDelete}
                 />
