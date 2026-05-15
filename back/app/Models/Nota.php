@@ -24,11 +24,11 @@ class Nota extends Model
 
     public function aluno()
     {
-        return $this->belongsTo(Aluno::class, "nota_aluno");
+        return $this->belongsTo(Aluno::class, "aluno_id");
     }
 
     public function avaliacao()
     {
-        return $this->belongsTo(Avaliacao::class, "nota_avaliacao");
+        return $this->belongsTo(Avaliacao::class, "nota_id");
     }
 }

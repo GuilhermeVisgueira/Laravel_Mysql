@@ -25,19 +25,19 @@ class Aula extends Model
 
     public function turma()
     {
-        return $this->hasMany(Turma::class, "turma_aula");
+        return $this->belongsTo(Turma::class, "turma_id");
     }
     public function avaliacao()
     {
-        return $this->hasMany(Avaliacao::class, "avaliacao_aula");
+        return $this->hasMany(Avaliacao::class, "aula_id");
     }
     public function disciplina()
     {
-        return $this->belongsTo(Disciplina::class,"aula_disciplina");
+        return $this->belongsTo(Disciplina::class,"disciplina_id");
     
     }
     public function funcionario()
     {
-        return $this->belongsTo(Funcionario::class,"funcionario_aula");
+        return $this->belongsTo(Funcionario::class,"funcionario_id");
     }
 }

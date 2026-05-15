@@ -23,7 +23,7 @@ class Disciplina extends Model
 
     public function aula()
     {
-        return $this->hasMany(Aula::class, "aula_disciplina");
+        return $this->hasMany(Aula::class, "disciplina_id");
     }
 
 }

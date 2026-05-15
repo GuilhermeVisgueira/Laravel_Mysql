@@ -36,7 +36,7 @@ class Funcionario extends Model
 
     public function aula()
     {
-        return $this->hasMany(Aula::class,"funcionario_aula");
+        return $this->hasMany(Aula::class,"funcionario_id");
     }
 
 }

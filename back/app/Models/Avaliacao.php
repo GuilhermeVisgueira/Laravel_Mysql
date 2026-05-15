@@ -23,13 +23,13 @@ class Avaliacao extends Model
 
     public function nota()
     {
-        return $this-> hasMany(Nota::class,"nota_avaliacao");
+        return $this-> hasMany(Nota::class,"avaliacao_id");
 
     }
 
     public function aula()
     {
-        return $this-> belongsTo(Aula::class, "avaliacao_aula");
+        return $this-> belongsTo(Aula::class, "aula_id");
     }
 
 }

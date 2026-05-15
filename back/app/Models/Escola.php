@@ -25,7 +25,7 @@ class Escola extends Model
     
     public function aluno()
     {
-        return $this->hasMany (Aluno:: class, "aluno_escola");
+        return $this->hasMany (Aluno:: class, "escola_id");
     }
 
     public function escolaFuncionario ()
@@ -35,6 +35,6 @@ class Escola extends Model
 
     public function turma()
     {
-        return $this->hasMany(Turma::class, "turma_escola");
+        return $this->hasMany(Turma::class, "escola_id");
     }
 }

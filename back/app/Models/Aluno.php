@@ -26,17 +26,17 @@ class Aluno extends Model
 
     public function escola ()
     {
-        return $this->belongsTo(Escola::class, "aluno_escola");
+        return $this->belongsTo(Escola::class, "escola_id");
     }
 
     public function nota()
     {
-        return $this->hasMany(Nota::class, "nota_aluno");
+        return $this->hasMany(Nota::class, "aluno_id");
     }
 
     public function turma()
     {
-        return $this->belongsTo(Turma::class, "aluno_turma");
+        return $this->belongsTo(Turma::class, "turma_id");
     }
     
 }
