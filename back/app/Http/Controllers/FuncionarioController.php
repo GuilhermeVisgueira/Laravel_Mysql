@@ -39,8 +39,9 @@ class FuncionarioController extends Controller
             {
             return response()->json(["Erro" => "Funcionario nao encontrado"]);
             }
-        $funcionario->updated($request->all());
+        $funcionario->update($request->all());
         return response()->json($funcionario, 200);
+        print var_dump(response());
     }
 
     public function delete($id)

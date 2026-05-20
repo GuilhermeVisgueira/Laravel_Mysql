@@ -50,12 +50,13 @@ const MODULES = [
     color: "#0ea5e9",
     fields: [
       { name: "descricao",    label: "Descrição", type: "text", required: true },
-      { name: "turma_escola", label: "Escola",    type: "select", optionsApi: API.escola.list, optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
-      { name: "turma_aula",   label: "Aula",      type: "select", optionsApi: API.aula.list,   optionLabel: (r) => `Aula #${r.id}` },
+      { name: "escola_id", label: "Escola", type: "select", optionsApi: API.escola.list, optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
+      
+      
     ],
     resolveColumns: {
-      turma_escola: { api: API.escola.list, label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
-      turma_aula:   { api: API.aula.list,   label: (r) => `Aula #${r.id}`,               colHeader: "Aula"   },
+      escola_id: { api: API.escola.list, label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
+      
     },
     api: API.turma,
     display: (r) => r.descricao,
@@ -68,12 +69,12 @@ const MODULES = [
     fields: [
       { name: "nome",         label: "Nome",      type: "text",   required: true },
       { name: "matricula",    label: "Matrícula", type: "number", required: true },
-      { name: "aluno_escola", label: "Escola",    type: "select", optionsApi: API.escola.list, optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
-      { name: "aluno_turma",  label: "Turma",     type: "select", optionsApi: API.turma.list,  optionLabel: (r) => r.descricao   || `ID ${r.id}` },
+      { name: "escola_id", label: "Escola",    type: "select", optionsApi: API.escola.list, optionLabel: (r) => r.nome_escola || `ID ${r.id}` },
+      { name: "turma_id",  label: "Turma",     type: "select", optionsApi: API.turma.list,  optionLabel: (r) => r.descricao   || `ID ${r.id}` },
     ],
     resolveColumns: {
-      aluno_escola: { api: API.escola.list, label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
-      aluno_turma:  { api: API.turma.list,  label: (r) => r.descricao   || `ID ${r.id}`, colHeader: "Turma"  },
+      escola_id: { api: API.escola.list, label: (r) => r.nome_escola || `ID ${r.id}`, colHeader: "Escola" },
+      turma_id:  { api: API.turma.list,  label: (r) => r.descricao   || `ID ${r.id}`, colHeader: "Turma"  },
     },
     api: API.aluno,
     display: (r) => r.nome,
@@ -118,13 +119,15 @@ const MODULES = [
     icon: "🗒️",
     color: "#14b8a6",
     fields: [
-      { name: "aula_disciplina",  label: "Disciplina",           type: "select", optionsApi: API.disciplina.list,  optionLabel: (r) => r.nome || `ID ${r.id}` },
-      { name: "funcionario_aula", label: "Funcionário (Prof.)",  type: "select", optionsApi: API.funcionario.list, optionLabel: (r) => r.nome || `ID ${r.id}` },
+      { name: "disciplina_id",  label: "Disciplina",           type: "select", optionsApi: API.disciplina.list,  optionLabel: (r) => r.nome || `ID ${r.id}` },
+      { name: "funcionario_id", label: "Funcionário (Prof.)", type: "select", optionsApi: API.funcionario.list, optionLabel: (r) => r.nome || `ID ${r.id}` },
+      { name: "turma_id", label: "Turma", type: "select", optionsApi: API.turma.list, optionLabel: (r) => r.descricao || `ID ${r.id}` },
     ],
     // used to resolve FK ids → names in the list table
     resolveColumns: {
-      aula_disciplina:  { api: API.disciplina.list,  label: (r) => r.nome       || `ID ${r.id}`, colHeader: "Disciplina" },
-      funcionario_aula: { api: API.funcionario.list, label: (r) => r.nome       || `ID ${r.id}`, colHeader: "Professor" },
+      disciplina_id:  { api: API.disciplina.list,  label: (r) => r.nome       || `ID ${r.id}`, colHeader: "Disciplina" },
+      funcionario_id: { api: API.funcionario.list, label: (r) => r.nome || `ID ${r.id}`, colHeader: "Professor" },
+      turma_id: { api: API.turma.list, label: (r) => r.descricao       || `ID ${r.id}`, colHeader: "Turma" },
     },
     api: API.aula,
     display: (r) => `Aula #${r.id}`,
@@ -135,10 +138,10 @@ const MODULES = [
     icon: "📝",
     color: "#f97316",
     fields: [
-      { name: "avaliacao_aula", label: "Aula", type: "select", optionsApi: API.aula.list, optionLabel: (r) => `Aula #${r.id}` },
+      { name: "aula_id", label: "Aula", type: "select", optionsApi: API.aula.list, optionLabel: (r) => `Aula #${r.id}` },
     ],
     resolveColumns: {
-      avaliacao_aula: { api: API.aula.list, label: (r) => `Aula #${r.id}`, colHeader: "Aula" },
+      aula_id: { api: API.aula.list, label: (r) => `Aula #${r.id}`, colHeader: "Aula" },
     },
     api: API.avaliacao,
     display: (r) => `Avaliação #${r.id}`,
@@ -149,12 +152,12 @@ const MODULES = [
     icon: "⭐",
     color: "#eab308",
     fields: [
-      { name: "nota_aluno",     label: "Aluno",     type: "select", optionsApi: API.aluno.list,     optionLabel: (r) => r.nome || `ID ${r.id}` },
-      { name: "nota_avaliacao", label: "Avaliação", type: "select", optionsApi: API.avaliacao.list, optionLabel: (r) => `Avaliação #${r.id}` },
+      { name: "aluno_id",     label: "Aluno",     type: "select", optionsApi: API.aluno.list,     optionLabel: (r) => r.nome || `ID ${r.id}` },
+      { name: "avaliacao_id", label: "Avaliação", type: "select", optionsApi: API.avaliacao.list, optionLabel: (r) => `Avaliação #${r.id}` },
     ],
     resolveColumns: {
-      nota_aluno:     { api: API.aluno.list,     label: (r) => r.nome || `ID ${r.id}`, colHeader: "Aluno" },
-      nota_avaliacao: { api: API.avaliacao.list, label: (r) => `Avaliação #${r.id}`,   colHeader: "Avaliação" },
+      aluno_id:     { api: API.aluno.list,     label: (r) => r.nome || `ID ${r.id}`, colHeader: "Aluno" },
+      avaliacao_id: { api: API.avaliacao.list, label: (r) => `Avaliação #${r.id}`,   colHeader: "Avaliação" },
     },
     api: API.nota,
     display: (r) => `Nota #${r.id}`,
