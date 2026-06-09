@@ -154,10 +154,12 @@ const MODULES = [
     fields: [
       { name: "aluno_id",     label: "Aluno",     type: "select", optionsApi: API.aluno.list,     optionLabel: (r) => r.nome || `ID ${r.id}` },
       { name: "avaliacao_id", label: "Avaliação", type: "select", optionsApi: API.avaliacao.list, optionLabel: (r) => `Avaliação #${r.id}` },
+      { name: "nota", label: "Nota", type: "number", required: true},
     ],
     resolveColumns: {
       aluno_id:     { api: API.aluno.list,     label: (r) => r.nome || `ID ${r.id}`, colHeader: "Aluno" },
       avaliacao_id: { api: API.avaliacao.list, label: (r) => `Avaliação #${r.id}`,   colHeader: "Avaliação" },
+      
     },
     api: API.nota,
     display: (r) => `Nota #${r.id}`,
