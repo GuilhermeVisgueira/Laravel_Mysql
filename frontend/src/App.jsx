@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-const BASE_URL = "http://192.168.0.193:8000/api";
+const BASE_URL = "http://192.168.0.191:8000/api";
 
 const API = {
   escola:       { list: "/escolas",           id: (i) => `/escolas/${i}` },
